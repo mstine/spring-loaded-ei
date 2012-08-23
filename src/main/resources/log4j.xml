@@ -14,6 +14,10 @@
 	<logger name="org.springframework">
 		<level value="warn" />
 	</logger>
+	
+	<logger name="org.springframework.integration.handler.LoggingHandler">
+		<level value="info" />
+	</logger>
 
 	<logger name="com.dss.slei">
 		<level value="debug" />

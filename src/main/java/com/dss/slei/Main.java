@@ -19,11 +19,10 @@ public class Main {
 			.append("\"title\": \"We've got a bug!\",")
 			.append("\"description\": \"When I tried to submit a new ticket, I got a huge stack trace!\",")
 			.append("\"submitter\": \"Matt Stine\"")
-			.append("}");					
-		
+			.append("}");			
+				
 		Ticket ticket = ticketService.submitJsonTicket(ticketJsonBuilder.toString());
 		
-		log.debug("JSON: " + ticketJsonBuilder.toString());
 		log.debug("TICKET: " + ticket.toString());
 	}
 

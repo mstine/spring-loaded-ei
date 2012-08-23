@@ -12,8 +12,10 @@
 					default-request-channel="jsonTicketRequestChannel"
 					default-reply-channel="newTicketResponseChannel"/>
 					
-			<channel id="jsonTicketRequestChannel"/>
+			<publish-subscribe-channel id="jsonTicketRequestChannel"/>
 			<channel id="newTicketResponseChannel"/>
+			
+			<logging-channel-adapter channel="jsonTicketRequestChannel"/>
 			
 			<json-to-object-transformer input-channel="jsonTicketRequestChannel"
 					output-channel="newTicketResponseChannel"
