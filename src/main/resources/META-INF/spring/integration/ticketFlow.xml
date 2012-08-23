@@ -9,14 +9,10 @@
 			
 			<gateway id="ticketService"
 					service-interface="com.dss.slei.service.TicketService" 
-					default-request-channel="jsonTicketRequestChannel"
-					default-reply-channel="newTicketResponseChannel"/>
+					default-request-channel="jsonTicketRequestChannel"/>
 					
 			<channel id="jsonTicketRequestChannel"/>
-			<channel id="newTicketResponseChannel"/>
 			
-			<json-to-object-transformer input-channel="jsonTicketRequestChannel"
-					output-channel="newTicketResponseChannel"
-					type="com.dss.slei.service.Ticket "/>
+			<logging-channel-adapter channel="jsonTicketRequestChannel"/>
 			
 </beans:beans>
