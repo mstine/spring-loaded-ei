@@ -1,15 +1,11 @@
 package com.dss.slei;
 
-import org.apache.log4j.Logger;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.dss.slei.service.Ticket;
 import com.dss.slei.service.TicketService;
 
 public class Main {
-	
-	private static Logger log = Logger.getLogger(Main.class);
-	
+		
 	public static void main(String args[]) {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/META-INF/spring/integration/ticketFlow.xml");
 		TicketService ticketService = context.getBean("ticketService", TicketService.class);
@@ -21,9 +17,16 @@ public class Main {
 			.append("\"submitter\": \"Matt Stine\"")
 			.append("}");			
 				
-		Ticket ticket = ticketService.submitJsonTicket(ticketJsonBuilder.toString());
+		ticketService.submitJsonTicket(ticketJsonBuilder.toString());
 		
-		log.debug("TICKET: " + ticket.toString());
+		ticketJsonBuilder = new StringBuilder();
+		ticketJsonBuilder.append("{ ")
+			.append("\"title\": \"Missing Stapler\",")
+			.append("\"description\": \"I seem to have misplaced my red Swingline stapler!\",")
+			.append("\"submitter\": \"Milton\"")
+			.append("}");			
+				
+		ticketService.submitJsonTicket(ticketJsonBuilder.toString());
 	}
 
 }

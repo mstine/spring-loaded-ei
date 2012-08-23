@@ -2,26 +2,47 @@
 <beans:beans xmlns="http://www.springframework.org/schema/integration"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:beans="http://www.springframework.org/schema/beans"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
-			http://www.springframework.org/schema/beans/spring-beans.xsd
-			http://www.springframework.org/schema/integration
-			http://www.springframework.org/schema/integration/spring-integration.xsd">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+		
+			<context:component-scan base-package="com.dss.slei"/>
 			
 			<gateway id="ticketService"
 				service-interface="com.dss.slei.service.TicketService" 
 				default-request-channel="jsonTicketRequestChannel"
-				default-reply-channel="newTicketResponseChannel"/>
+				default-reply-channel="acceptedTicketsChannel"/>
 					
 			<publish-subscribe-channel id="jsonTicketRequestChannel"/>
-			
-			<channel id="newTicketResponseChannel"/>
-			
+						
 			<logging-channel-adapter id="jsonTicketRequestChannelLogger"
 				channel="jsonTicketRequestChannel"/>
 			
 			<json-to-object-transformer id="jsonToObjectTransformer" 
 				input-channel="jsonTicketRequestChannel"
-				output-channel="newTicketResponseChannel"
+				output-channel="newTicketObjectChannel"
 				type="com.dss.slei.service.Ticket "/>
+				
+			<channel id="newTicketObjectChannel"/>
+				
+			<filter id="miltonTicketFilter"
+				input-channel="newTicketObjectChannel"
+				output-channel="acceptedTicketsChannel"
+				discard-channel="rejectedTicketsChannel"
+				ref="ticketFilter"
+				method="isNotFromMilton"/>
+				
+			<publish-subscribe-channel id="acceptedTicketsChannel"/>
+			
+			<channel id="rejectedTicketsChannel"/>
+			
+			<logging-channel-adapter id="acceptedTicketsLogger"
+				channel="acceptedTicketsChannel"
+				logger-name="ACCEPTED TICKET"/>
+				
+			<logging-channel-adapter id="rejectedTicketsLogger"
+				channel="rejectedTicketsChannel"
+				logger-name="REJECTED TICKET"/>
 			
 </beans:beans>

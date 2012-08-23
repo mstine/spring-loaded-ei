@@ -18,6 +18,14 @@
 	<logger name="org.springframework.integration.handler.LoggingHandler">
 		<level value="info" />
 	</logger>
+	
+	<logger name="ACCEPTED TICKET">
+		<level value="info" />
+	</logger>
+	
+	<logger name="REJECTED TICKET">
+		<level value="info" />
+	</logger>
 
 	<logger name="com.dss.slei">
 		<level value="debug" />
