@@ -8,17 +8,20 @@
 			http://www.springframework.org/schema/integration/spring-integration.xsd">
 			
 			<gateway id="ticketService"
-					service-interface="com.dss.slei.service.TicketService" 
-					default-request-channel="jsonTicketRequestChannel"
-					default-reply-channel="newTicketResponseChannel"/>
+				service-interface="com.dss.slei.service.TicketService" 
+				default-request-channel="jsonTicketRequestChannel"
+				default-reply-channel="newTicketResponseChannel"/>
 					
 			<publish-subscribe-channel id="jsonTicketRequestChannel"/>
+			
 			<channel id="newTicketResponseChannel"/>
 			
-			<logging-channel-adapter channel="jsonTicketRequestChannel"/>
+			<logging-channel-adapter id="jsonTicketRequestChannelLogger"
+				channel="jsonTicketRequestChannel"/>
 			
-			<json-to-object-transformer input-channel="jsonTicketRequestChannel"
-					output-channel="newTicketResponseChannel"
-					type="com.dss.slei.service.Ticket "/>
+			<json-to-object-transformer id="jsonToObjectTransformer" 
+				input-channel="jsonTicketRequestChannel"
+				output-channel="newTicketResponseChannel"
+				type="com.dss.slei.service.Ticket "/>
 			
 </beans:beans>
