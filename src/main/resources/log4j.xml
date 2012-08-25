@@ -26,6 +26,22 @@
 	<logger name="REJECTED TICKET">
 		<level value="info" />
 	</logger>
+	
+	<logger name="ROUTED TO NINA">
+		<level value="info" />
+	</logger>
+	
+	<logger name="ROUTED TO BILL LUMBERGH">
+		<level value="info" />
+	</logger>
+	
+	<logger name="ROUTED TO MICHAEL BOLTON">
+		<level value="info" />
+	</logger>
+	
+	<logger name="ROUTED TO PETER GIBBONS">
+		<level value="info" />
+	</logger>
 
 	<logger name="com.dss.slei">
 		<level value="debug" />

@@ -39,5 +39,9 @@ public class Ticket {
 				.add("submitter", submitter)
 				.toString();
 	}
+	
+	public boolean subjectIs(String subject) {
+		return title.toUpperCase().indexOf(subject.toUpperCase()) != -1;
+	}
 }
 

@@ -12,7 +12,8 @@
 			<gateway id="ticketService"
 				service-interface="com.dss.slei.service.TicketService" 
 				default-request-channel="jsonTicketRequestChannel"
-				default-reply-channel="acceptedTicketsChannel"/>
+				default-reply-channel="acceptedTicketsChannel"
+				default-reply-timeout="5000"/>
 					
 			<publish-subscribe-channel id="jsonTicketRequestChannel"/>
 						
@@ -44,5 +45,32 @@
 			<logging-channel-adapter id="rejectedTicketsLogger"
 				channel="rejectedTicketsChannel"
 				logger-name="REJECTED TICKET"/>
+							
+			<router id="staffMemberTicketRouter"
+				input-channel="acceptedTicketsChannel"
+				ref="ticketRouter"
+				method="staffMemberFor"
+				default-output-channel="rejectedTicketsChannel"/>
+				
+			<channel id="NINA"/>
+			<channel id="B_LUMBERGH"/>
+			<channel id="M_BOLTON"/>
+			<channel id="P_GIBBONS"/>
+			
+			<logging-channel-adapter id="ninaTicketsLogger"
+				channel="NINA"
+				logger-name="ROUTED TO NINA"/>
+				
+			<logging-channel-adapter id="blumberghTicketsLogger"
+				channel="B_LUMBERGH"
+				logger-name="ROUTED TO BILL LUMBERGH"/>
+				
+			<logging-channel-adapter id="mboltonTicketsLogger"
+				channel="M_BOLTON"
+				logger-name="ROUTED TO MICHAEL BOLTON"/>
+				
+			<logging-channel-adapter id="pgibbonsTicketsLogger"
+				channel="P_GIBBONS"
+				logger-name="ROUTED TO PETER GIBBONS"/>
 			
 </beans:beans>
