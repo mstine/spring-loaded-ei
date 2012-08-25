@@ -14,8 +14,13 @@
 				default-request-channel="jsonTicketRequestChannel"
 				default-reply-channel="acceptedTicketsChannel"
 				default-reply-timeout="5000"/>
+				
+			<gateway id="ticketBatchService"
+				service-interface="com.dss.slei.service.TicketBatchService" 
+				default-request-channel="ticketBatchChannel"/>
 					
 			<publish-subscribe-channel id="jsonTicketRequestChannel"/>
+			<channel id="ticketBatchChannel"/>
 						
 			<logging-channel-adapter id="jsonTicketRequestChannelLogger"
 				channel="jsonTicketRequestChannel"/>
@@ -72,5 +77,11 @@
 			<logging-channel-adapter id="pgibbonsTicketsLogger"
 				channel="P_GIBBONS"
 				logger-name="ROUTED TO PETER GIBBONS"/>
+				
+			<splitter id="ticketBatchSplitterBean"
+				input-channel="ticketBatchChannel"
+				output-channel="newTicketObjectChannel"
+				ref="ticketBatchSplitter"
+				method="ticketsFrom"/>
 			
 </beans:beans>
