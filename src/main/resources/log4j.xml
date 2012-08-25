@@ -42,6 +42,14 @@
 	<logger name="ROUTED TO PETER GIBBONS">
 		<level value="info" />
 	</logger>
+	
+	<logger name="TICKET BATCH">
+		<level value="info" />
+	</logger>
+	
+	<logger name="WIRE TAP">
+		<level value="info" />
+	</logger>
 
 	<logger name="com.dss.slei">
 		<level value="debug" />

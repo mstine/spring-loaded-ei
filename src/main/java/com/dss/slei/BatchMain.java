@@ -1,5 +1,6 @@
 package com.dss.slei;
 
+import org.apache.log4j.Logger;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.dss.slei.service.Ticket;
@@ -7,6 +8,8 @@ import com.dss.slei.service.TicketBatch;
 import com.dss.slei.service.TicketBatchService;
 
 public class BatchMain {
+	
+	private static Logger log = Logger.getLogger(BatchMain.class);
 		
 	public static void main(String args[]) {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/META-INF/spring/integration/ticketFlow.xml");
@@ -44,7 +47,8 @@ public class BatchMain {
 		ticket.setSubmitter("Samir Nagheenanajar");
 		batch.addTicket(ticket);
 		
-		ticketBatchService.submit(batch);	
+		batch = ticketBatchService.submit(batch);
+		log.debug("Should have ID's: " + batch);
 	}
 
 

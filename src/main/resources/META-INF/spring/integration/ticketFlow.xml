@@ -17,9 +17,12 @@
 				
 			<gateway id="ticketBatchService"
 				service-interface="com.dss.slei.service.TicketBatchService" 
-				default-request-channel="ticketBatchChannel"/>
+				default-request-channel="ticketBatchChannel"
+				default-reply-channel="ticketBatchWithIdsChannel"
+				default-reply-timeout="5000"/>
 					
 			<publish-subscribe-channel id="jsonTicketRequestChannel"/>
+			
 			<channel id="ticketBatchChannel"/>
 						
 			<logging-channel-adapter id="jsonTicketRequestChannelLogger"
@@ -31,17 +34,25 @@
 				type="com.dss.slei.service.Ticket "/>
 				
 			<channel id="newTicketObjectChannel"/>
-				
+							
 			<filter id="miltonTicketFilter"
 				input-channel="newTicketObjectChannel"
-				output-channel="acceptedTicketsChannel"
+				output-channel="assignIdChannel"
 				discard-channel="rejectedTicketsChannel"
 				ref="ticketFilter"
 				method="isNotFromMilton"/>
 				
+			<channel id="assignIdChannel"/>
+			
+			<service-activator id="assignIdService"
+				input-channel="assignIdChannel"
+				output-channel="acceptedTicketsChannel"
+				ref="ticketIdService"
+				method="assignIdTo"/>	
+					
 			<publish-subscribe-channel id="acceptedTicketsChannel"/>
 			
-			<channel id="rejectedTicketsChannel"/>
+			<publish-subscribe-channel id="rejectedTicketsChannel"/>
 			
 			<logging-channel-adapter id="acceptedTicketsLogger"
 				channel="acceptedTicketsChannel"
@@ -82,6 +93,35 @@
 				input-channel="ticketBatchChannel"
 				output-channel="newTicketObjectChannel"
 				ref="ticketBatchSplitter"
-				method="ticketsFrom"/>
+				method="ticketsFrom" />	
+									
+			<recipient-list-router id="acceptedTicketRecipientListRouter" 
+				input-channel="acceptedTicketsChannel"
+				resolution-required="false"
+				default-output-channel="nullChannel">
+				<recipient channel="ticketsToAggregateChannel" selector-expression="headers.containsKey('correlationId') "/>
+			</recipient-list-router>
 			
+			<recipient-list-router id="rejectedTicketRecipientListRouter"
+				input-channel="rejectedTicketsChannel"
+				resolution-required="false"
+				default-output-channel="nullChannel">
+				<recipient channel="ticketsToAggregateChannel" selector-expression="headers.containsKey('correlationId')"/>
+			</recipient-list-router>	
+			
+			<channel id="ticketsToAggregateChannel"/>
+				
+			<aggregator id="ticketBatchAggregator"
+				input-channel="ticketsToAggregateChannel"
+				output-channel="ticketBatchWithIdsChannel"
+				ref="ticketBatchBuilder"
+				method="createFrom"
+				send-timeout="5000"/>
+				
+			<publish-subscribe-channel id="ticketBatchWithIdsChannel"/>
+						
+			<logging-channel-adapter id="ticketBatchWithIdsLogger"
+				channel="ticketBatchWithIdsChannel"
+				logger-name="TICKET BATCH"/>
+							
 </beans:beans>
